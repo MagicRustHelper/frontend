@@ -4,13 +4,14 @@ import { RCCPlayer } from "../interfaces/rcc"
 import { IBan, IBanRow } from "../interfaces/rows"
 import { Player } from "../interfaces/magic"
 import { baseSteamAvatar } from "../constants"
+import { useToken } from "./getToken"
 
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjEuMDUzNDUyMzQ1MjM0NTMyNWUrMzgsImRiX2lkIjoxfQ.MXC_3zq7Tw3XL5uWSXKrlrbWwCirjbXpkuSQKK9m2iA'
 
 export function useBans() {
     const [onlinePlayers, setOnlinePlayers] = useState<{ [key: string]: Player }>(() => { return {} })
     const [RCCPlayers, setRCCPlayers] = useState<RCCPlayer[]>(() => { return [] })
     const [banRows, setBanRows] = useState<IBanRow[]>(() => { return [] })
+    const token = useToken()
 
 
 
@@ -38,7 +39,7 @@ export function useBans() {
     }
 
     async function updateBanRows() {
-        const newBanRows: IBanRow[] = await getNewBanRows(RCCPlayers, onlinePlayers)
+        const newBanRows: IBanRow[] = await getNewBanRows(RCCPlayers, onlinePlayers, token)
         setBanRows([...banRows, ...newBanRows])
     }
 
@@ -60,7 +61,7 @@ export function useBans() {
 
 
 
-async function getNewBanRows(RCCPlayers: RCCPlayer[], onlinePlayers: { [key: string]: Player }): Promise<IBanRow[]> {
+async function getNewBanRows(RCCPlayers: RCCPlayer[], onlinePlayers: { [key: string]: Player }, token: string): Promise<IBanRow[]> {
     const newBanRows: IBanRow[] = []
     for (var RCCPlayer of RCCPlayers) {
         const player: Player = onlinePlayers[RCCPlayer.steamid]

@@ -1,4 +1,4 @@
-import { Route, Routes, Navigate } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { BanPage } from './pages/BanPage';
 import { AuthPage, AuthVKPage } from './pages/AuthPages';
 import { PrivateRoute } from './components/PrivateRoute';

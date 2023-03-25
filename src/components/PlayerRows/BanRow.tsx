@@ -8,9 +8,6 @@ interface BanRowProps {
     byActiveBan: boolean
 }
 
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjEuMDUzNDUyMzQ1MjM0NTMyNWUrMzgsImRiX2lkIjoxfQ.MXC_3zq7Tw3XL5uWSXKrlrbWwCirjbXpkuSQKK9m2iA'
-
-
 export function BanRow(props: BanRowProps) {
     const is_new_account = props.playerRow.is_new_account ? 'Да' : 'Нет';
     const is_checked = props.playerRow.is_checked ? 'Да' : 'Нет';
