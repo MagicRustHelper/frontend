@@ -1,0 +1,106 @@
+import axios from 'axios';
+import { Player, PlayerStats } from '../interfaces/magic';
+import { RCCPlayer } from '../interfaces/rcc';
+import { BearerToken } from '../interfaces/auth'
+import { IAvatar } from '../interfaces/steam';
+
+const apiUrl: string = 'http://127.0.0.1:443/v1'
+
+function authHeaders(token: string) {
+    return {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        }
+    };
+}
+
+
+class RCCAPI {
+    rccApiUrl: string
+
+    constructor() {
+        this.rccApiUrl = apiUrl + '/rcc'
+    }
+
+    async getRCCPlayer(steamid: string, token: string) {
+        const response = await axios.get<RCCPlayer>(`${this.rccApiUrl}/player/${steamid}`, authHeaders(token))
+        return response.data
+    }
+
+    async getRCCPlayers(steamids: Array<string>, token: string) {
+        const response = await axios.post<RCCPlayer[]>(`${this.rccApiUrl}/players`, steamids, authHeaders(token));
+        return response.data
+
+    }
+}
+
+class magicAPI {
+    magicApiUrl: string
+
+    constructor() {
+        this.magicApiUrl = apiUrl + '/magic'
+    }
+
+    async getOnlinePlayers(token: string) {
+        const response = await axios.get<Player[]>(`${this.magicApiUrl}/players/online`, authHeaders(token))
+        return response.data
+    }
+
+    async getOnlinePlayersDict(token: string) {
+        const response = await axios.get<{ [key: string]: Player }>(`${this.magicApiUrl}/players/online/dict`, authHeaders(token))
+        return response.data
+    }
+
+    async getOnlineNewPlayers(days: number, stats: boolean = false, token: string) {
+        const response = await axios.get<Player[]>(`${this.magicApiUrl}/players/new?days=${days}&stats=${stats}`, authHeaders(token))
+        return response.data
+    }
+
+    async getPlayerStats(serverNumber: number, steamid: number, token: string) {
+        const response = await axios.get<PlayerStats>(`${this.magicApiUrl}/server/${serverNumber}/stats/${steamid}`, authHeaders(token))
+        return response.data
+    }
+}
+
+class authAPI {
+    authApiUrl: string
+
+    constructor() {
+        this.authApiUrl = apiUrl + '/auth'
+    }
+
+    async vkAuth(code: string) {
+        const response = await axios.get<BearerToken>(`${this.authApiUrl}/vk?code=${code}`)
+        if (response.data.token) {
+            return response.data
+        }
+        else {
+            throw new Error('Cant login')
+        }
+    }
+
+    async isLoggedIn(token: string) {
+        const response = await axios.get(`${this.authApiUrl}/validate`, authHeaders(token))
+        if (response.status == 204) return true;
+        return false;
+    }
+
+
+}
+
+class steamAPI {
+    steamApiUrl: string
+
+    constructor() {
+        this.steamApiUrl = apiUrl + '/steam'
+    }
+    async getAvatarUrl(steamid: string, token: string) {
+        const response = await axios.get<IAvatar>(`${this.steamApiUrl}/user/avatar/${steamid}`, authHeaders(token))
+        return response.data
+    }
+}
+
+export const RCCApi = new RCCAPI()
+export const magicApi = new magicAPI()
+export const authApi = new authAPI()
+export const steamApi = new steamAPI()

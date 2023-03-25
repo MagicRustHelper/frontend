@@ -1,0 +1,115 @@
+main {}
+
+.main {
+    margin-top: 30px;
+    padding-top: 15px;
+    border-radius: 20px;
+    background-color: #242425;
+    -webkit-box-shadow: 0px 10px 8px 8px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0px 10px 8px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 10px 8px 8px rgba(0, 0, 0, 0.2);
+}
+
+.search {}
+
+.search-item {
+    display: inline;
+    margin-inline: 10px;
+}
+
+.search-item input {}
+
+.search-button {
+    background-color: var(--back);
+    padding: 15px;
+    border-radius: 15px;
+    cursor: pointer;
+    color: white;
+    text-align: center;
+    border: none;
+    font-size: 18px;
+}
+
+.search-button-pressed {
+    background-color: var(--purple);
+}
+
+.search input[type='number'] {
+    width: 200px;
+    padding: 10px;
+    border-radius: 15px;
+    background-color: var(--back);
+    color: var(--white);
+}
+
+
+.search-refresh {
+    font-size: 24px;
+}
+
+
+.player-rows {
+    margin-top: 20px;
+    padding-bottom: 15px;
+}
+
+.player-row {
+    display: flex;
+    background-color: #141414;
+    align-items: center;
+    padding-inline: 15px;
+    margin-top: 5px;
+    border-radius: 8px;
+    height: 60px;
+}
+
+
+.player-row:nth-of-type(odd) {
+    background-color: #1a1a1b;
+}
+
+.player-row:hover {
+    /* background-color: grey; */
+    -webkit-box-shadow: 0px 10px 8px 8px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0px 10px 8px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 10px 8px 8px rgba(0, 0, 0, 0.2);
+}
+
+.player-item {
+    margin-inline: 10px;
+}
+
+.player-server {
+    width: 5px;
+    text-align: left;
+}
+
+.player-img {
+    width: 60px;
+    border-radius: 14px;
+    padding: 3px;
+}
+
+.player-nickname {
+    width: 200px;
+    text-align: left;
+    text-indent: 10px;
+    cursor: pointer;
+}
+
+.player-id {
+    width: 140px;
+    cursor: copy;
+}
+
+.player-new {
+    width: 30px;
+}
+
+.player-checked {
+    width: 30px;
+}
+
+/* .player-server-ban {
+    width: 200px;
+} */

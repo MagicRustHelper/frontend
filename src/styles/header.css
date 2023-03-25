@@ -1,0 +1,108 @@
+:root {
+    --back: #111111;
+    --backAdv: #111112;
+    --main: #272729;
+    --grey: #8e8e93;
+    --purple: #5b59e6;
+    --red: #e65959;
+    --green: #59e667;
+    --white: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body,
+html {
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    color: var(--white);
+    text-decoration: none;
+}
+
+body {
+    background-color: var(--main);
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--white);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-inline: 15px;
+}
+
+header {
+    background-color: var(--back);
+    -webkit-box-shadow: 0px 10px 8px 0px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0px 10px 8px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 10px 8px 0px rgba(0, 0, 0, 0.2);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    font-size: 22px;
+    height: 100px;
+    align-items: center;
+
+}
+
+.nav-left {
+    display: flex;
+}
+
+.nav-right {}
+
+.nav-right img {
+    width: 60px;
+    height: 60px;
+}
+
+.nav-item {
+    margin-inline: 15px;
+}
+
+.nav-item a {
+    color: var(--white);
+}
+
+.nav-item a:hover {
+    color: var(--purple);
+}
+
+::-webkit-input-placeholder {
+    /* WebKit, Blink, Edge */
+    color: var(--white);
+}
+
+:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: var(--white);
+    opacity: 1;
+}
+
+::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: var(--white);
+    opacity: 1;
+}
+
+:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: var(--white);
+}
+
+::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: var(--white);
+}
+
+::placeholder {
+    /* Most modern browsers support this now. */
+    color: var(--white);
+}
