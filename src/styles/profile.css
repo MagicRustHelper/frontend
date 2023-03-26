@@ -31,6 +31,15 @@
     text-align: center;
 }
 
+div .settings-input {
+    height: 13px;
+    width: 300px;
+    padding: 10px;
+    border-radius: 15px;
+    background-color: var(--back);
+    color: var(--white);
+}
+
 .settings-button {
     background-color: black;
     padding: 15px;
