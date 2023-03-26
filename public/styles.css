@@ -1,0 +1,30 @@
+:root {
+    --back: #111111;
+    --backAdv: #111112;
+    --main: #272729;
+    --grey: #8e8e93;
+    --purple: #5b59e6;
+    --red: #e65959;
+    --green: #59e667;
+    --white: #ffffff;
+}
+
+.main {
+    margin-top: 30px;
+    padding-top: 15px;
+    border-radius: 20px;
+    background-color: #242425;
+    -webkit-box-shadow: 0px 10px 8px 8px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0px 10px 8px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 10px 8px 8px rgba(0, 0, 0, 0.2);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-inline: 15px;
+}
+
+.center {
+    text-align: center;
+}

@@ -1,6 +1,6 @@
 import vk_black_logo from '../assets/vk_black_logo.png'
 import { useSearchParams, Navigate } from 'react-router-dom'
-import { authApi } from '../services/api'
+import { authApi, profileApi } from '../services/api'
 import '../styles/auth.css'
 import { useEffect, useState } from 'react'
 

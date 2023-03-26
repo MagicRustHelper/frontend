@@ -3,6 +3,7 @@ import { Player, PlayerStats } from '../interfaces/magic';
 import { RCCPlayer } from '../interfaces/rcc';
 import { BearerToken } from '../interfaces/auth'
 import { IAvatar } from '../interfaces/steam';
+import { IProfileData, IProfileSettings } from '../interfaces/profile';
 
 const apiUrl: string = 'http://127.0.0.1:443/v1'
 
@@ -100,7 +101,34 @@ class steamAPI {
     }
 }
 
+class profileAPI {
+    profileApiUrl: string
+
+    constructor() {
+        this.profileApiUrl = apiUrl + '/profile'
+    }
+
+    async getData(token: string) {
+        const response = await axios.get<IProfileData>(`${this.profileApiUrl}/data`, authHeaders(token));
+        return response.data;
+    }
+
+    async getSettings(token: string) {
+        const response = await axios.get(`${this.profileApiUrl}/settings`, authHeaders(token));
+        return IProfileSettings.fromAxiosResponse(response.data);
+    }
+
+    async putSettings(settings: IProfileSettings, token: string) {
+        const response = await axios.put(`${this.profileApiUrl}/settings`, settings, authHeaders(token));
+        return response.data;
+    }
+}
+
+
+
+
 export const RCCApi = new RCCAPI()
 export const magicApi = new magicAPI()
 export const authApi = new authAPI()
 export const steamApi = new steamAPI()
+export const profileApi = new profileAPI()
