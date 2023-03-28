@@ -1,3 +1,4 @@
-export interface BearerToken {
+export interface AuthData {
     token: string
+    avatarUrl: string
 }

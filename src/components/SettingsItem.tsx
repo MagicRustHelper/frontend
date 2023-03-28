@@ -1,5 +1,4 @@
 import { KeyboardEvent, useState } from "react"
-import { IProfileSettings } from "../interfaces/profile"
 
 interface SettingsItemsProps {
     viewName: string

@@ -1,9 +1,9 @@
-import React from 'react';
 import '../styles/header.css';
-import profile from '../assets/profile.png'
+import { getAvatarUrl } from '../utils/localStorage';
 
 
 export function Header() {
+    const avatarUrl = getAvatarUrl()
     return (
         <header>
             <div className='container'>
@@ -15,7 +15,7 @@ export function Header() {
                         <div className="nav-item"><a href="">Статистика</a></div>
                     </div>
                     <div className='nav-right'>
-                        <a href="/profile"> <img src={profile} alt='' />  </a>
+                        <a href="/profile"> <img src={avatarUrl} alt='' className='profile-avatar' />  </a>
                     </div>
                 </nav>
             </div>

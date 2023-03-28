@@ -4,14 +4,14 @@ import { RCCPlayer } from "../interfaces/rcc"
 import { IBan, IBanRow } from "../interfaces/rows"
 import { Player } from "../interfaces/magic"
 import { baseSteamAvatar } from "../constants"
-import { useToken } from "./getToken"
+import { getBearerToken } from "../utils/localStorage"
 
 
 export function useBans() {
     const [onlinePlayers, setOnlinePlayers] = useState<{ [key: string]: Player }>(() => { return {} })
     const [RCCPlayers, setRCCPlayers] = useState<RCCPlayer[]>(() => { return [] })
     const [banRows, setBanRows] = useState<IBanRow[]>(() => { return [] })
-    const token = useToken()
+    const token = getBearerToken()
 
 
 
@@ -35,12 +35,12 @@ export function useBans() {
                 newRCCPlayers.push(player);
             }
         }
-        setRCCPlayers([...RCCPlayers, ...newRCCPlayers])
+        setRCCPlayers((prevRCCPlayers: RCCPlayer[]) => prevRCCPlayers.concat(newRCCPlayers))
     }
 
     async function updateBanRows() {
         const newBanRows: IBanRow[] = await getNewBanRows(RCCPlayers, onlinePlayers, token)
-        setBanRows([...banRows, ...newBanRows])
+        setBanRows(newBanRows)
     }
 
     useEffect(() => {
@@ -54,7 +54,7 @@ export function useBans() {
     useEffect(() => {
         updateBanRows()
     }, [RCCPlayers])
-
+    console.log('bans', RCCPlayers)
     return banRows
 }
 
@@ -94,7 +94,8 @@ function getIBanList(rccPlayer: RCCPlayer): IBan[] {
             {
                 'server_name': ban.serverName,
                 'days_left': Math.floor(((Date.now() / 1000) - ban.banDate) / 84600),
-                'active': ban.active
+                'active': ban.active,
+                'reason': ban.reason
             }
         )
     }

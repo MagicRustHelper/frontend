@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Player, PlayerStats } from '../interfaces/magic';
 import { RCCPlayer } from '../interfaces/rcc';
-import { BearerToken } from '../interfaces/auth'
+import { AuthData } from '../interfaces/auth'
 import { IAvatar } from '../interfaces/steam';
 import { IProfileData, IProfileSettings } from '../interfaces/profile';
 
@@ -71,7 +71,7 @@ class authAPI {
     }
 
     async vkAuth(code: string) {
-        const response = await axios.get<BearerToken>(`${this.authApiUrl}/vk?code=${code}`)
+        const response = await axios.get<AuthData>(`${this.authApiUrl}/vk?code=${code}`)
         if (response.data.token) {
             return response.data
         }

@@ -3,6 +3,7 @@ import { useSearchParams, Navigate } from 'react-router-dom'
 import { authApi, profileApi } from '../services/api'
 import '../styles/auth.css'
 import { useEffect, useState } from 'react'
+import { setAvatarUrl, setBearerToken, setProfileSettings } from '../utils/localStorage'
 
 export function AuthPage() {
     return (
@@ -12,22 +13,27 @@ export function AuthPage() {
 
 export function AuthVKPage() {
     const [searchParms] = useSearchParams();
-    const [token, setToken] = useState(null);
+    const [token, setToken] = useState<string>('');
 
-    async function authViaVKAndSetToken() {
+    async function authViaVKAndSetConfig() {
         // @ts-ignore
-        setToken((await authApi.vkAuth(searchParms.get('code'))).token);
+        const authData = await authApi.vkAuth(searchParms.get('code'));
+        const profileSettings = await profileApi.getSettings(authData.token)
+        setToken(authData.token)
+        setBearerToken(authData.token)
+        setAvatarUrl(authData.avatarUrl)
+        setProfileSettings(profileSettings)
     }
 
     useEffect(() => {
-        authViaVKAndSetToken()
+        authViaVKAndSetConfig()
     }, [token])
 
-    if (token == null) {
+
+    if (token == '') {
         return <div></div>
     }
     else {
-        localStorage.setItem('token', token)
         return (
             <Navigate replace to={'/bans'} />
         )

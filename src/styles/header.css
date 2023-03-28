@@ -89,3 +89,10 @@ nav {
     /* Most modern browsers support this now. */
     color: var(--white);
 }
+
+.profile-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-inline: 15px;
+}

@@ -12,4 +12,6 @@ export interface IBan {
     server_name: string,
     days_left: number,
     active: boolean,
+    reason: string,
+    isShow?: boolean,
 }
