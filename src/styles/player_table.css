@@ -61,6 +61,7 @@ main {}
     margin-top: 5px;
     border-radius: 8px;
     height: 60px;
+    cursor: pointer;
 }
 
 

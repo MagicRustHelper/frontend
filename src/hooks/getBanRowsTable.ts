@@ -1,24 +1,20 @@
 import { useEffect, useState } from "react"
-import { RCCApi, magicApi, steamApi } from "../services/api"
+import { RCCApi, steamApi } from "../services/api"
 import { RCCPlayer } from "../interfaces/rcc"
 import { IBan, IBanRow } from "../interfaces/rows"
 import { Player } from "../interfaces/magic"
 import { baseSteamAvatar } from "../constants"
-import { getBearerToken } from "../utils/localStorage"
+import { getBearerToken, getPlayerIsNew } from "../utils/localStorage"
+import { useOnlinePlayers } from "./getOnlinePlayers"
 
 
 export function useBans() {
-    const [onlinePlayers, setOnlinePlayers] = useState<{ [key: string]: Player }>(() => { return {} })
+    const token = getBearerToken()
+    const onlinePlayers = useOnlinePlayers(token)
     const [RCCPlayers, setRCCPlayers] = useState<RCCPlayer[]>(() => { return [] })
     const [banRows, setBanRows] = useState<IBanRow[]>(() => { return [] })
-    const token = getBearerToken()
 
 
-
-    async function fetchOnlinePlayers() {
-        const response = await magicApi.getOnlinePlayersDict(token)
-        setOnlinePlayers(response)
-    }
 
     async function PortionGetRCCPlayer() {
         const size: number = Object.keys(onlinePlayers).length
@@ -44,17 +40,12 @@ export function useBans() {
     }
 
     useEffect(() => {
-        fetchOnlinePlayers()
-    }, [])
-
-    useEffect(() => {
         PortionGetRCCPlayer()
     }, [onlinePlayers])
 
     useEffect(() => {
         updateBanRows()
     }, [RCCPlayers])
-    console.log('bans', RCCPlayers)
     return banRows
 }
 
@@ -71,8 +62,11 @@ async function getNewBanRows(RCCPlayers: RCCPlayer[], onlinePlayers: { [key: str
                 'avatar': await tryGetAvatar(RCCPlayer.steamid, token),
                 'nickname': player.nickname,
                 'steamid': RCCPlayer.steamid,
-                'is_new_account': isPlayerNew(player, 7),
+                'isNewAccount': isPlayerNew(player, getPlayerIsNew()),
+                'isChecked': isPlayerChecked(RCCPlayer),
                 'bans': getIBanList(RCCPlayer),
+                'serverNumber': parseInt(player.server)
+
             }
         )
     }
@@ -80,8 +74,8 @@ async function getNewBanRows(RCCPlayers: RCCPlayer[], onlinePlayers: { [key: str
 }
 function isPlayerNew(player: Player, days_while_new: number): boolean {
     const secnods_while_new = days_while_new * 86400
-    if (Date.now() / 1000 - player.firstjoin >= secnods_while_new) return true;
-    return false;
+    if (Date.now() / 1000 - player.firstjoin >= secnods_while_new) return false;
+    return true;
 }
 
 function getIBanList(rccPlayer: RCCPlayer): IBan[] {
@@ -92,8 +86,8 @@ function getIBanList(rccPlayer: RCCPlayer): IBan[] {
     for (var ban of rccPlayer.bans) {
         bans.push(
             {
-                'server_name': ban.serverName,
-                'days_left': Math.floor(((Date.now() / 1000) - ban.banDate) / 84600),
+                'serverName': ban.serverName,
+                'daysLeft': Math.floor(((Date.now() / 1000) - ban.banDate) / 86400),
                 'active': ban.active,
                 'reason': ban.reason
             }
@@ -111,4 +105,15 @@ async function tryGetAvatar(steamid: string, token: string) {
         avatarUrl = baseSteamAvatar;
     }
     return avatarUrl;
+}
+
+function isPlayerChecked(rccPlayer: RCCPlayer) {
+    if (rccPlayer.bans.length == 0) return false;
+    const lastBan = rccPlayer.bans.reduce((prev, cur) => prev.banDate > cur.banDate ? prev : cur)
+    const allChecksAfterBan = rccPlayer.last_check.filter((value) => value.time > lastBan.banDate)
+    for (let check of allChecksAfterBan) {
+        console.log(check.serverName)
+        if (check.serverName?.toLowerCase() == 'magicrust') return true
+    }
+    return false
 }

@@ -1,0 +1,102 @@
+.player-modal-container {
+    user-select: text;
+}
+
+
+.player-modal-container .info {
+    display: flex;
+}
+
+.player-modal-container .player-info {
+
+    margin: 12px;
+    margin-left: 20px;
+    margin-top: 10px;
+    width: 500px;
+}
+
+.player-info .name {
+    font-size: 140%;
+}
+
+.player-info .steamid {
+    font-size: 120%;
+}
+
+.player-modal-container .player-info>div {
+    margin-bottom: 10px;
+}
+
+.player-modal-container .player-info>span {
+    margin-left: 10px;
+}
+
+
+.player-modal-container .stats {
+    margin-top: 30px;
+}
+
+.stats .stat {
+    display: inline-block;
+    margin-inline: 30px;
+    font-size: 160%;
+}
+
+
+.player-modal-container .player-img {
+    margin: 10px;
+    width: 150px;
+    border-radius: 14px;
+    padding: 3px;
+}
+
+.actions {
+    margin-left: 30px;
+    width: 300px;
+}
+
+.actions .steam-logo {}
+
+.actions .logo {
+    margin-left: 60px;
+    margin-bottom: 7px;
+}
+
+.actions .action-button {
+    margin-top: 45px;
+    background-color: var(--back);
+    padding: 15px;
+    border-radius: 15px;
+    cursor: pointer;
+    color: white;
+    text-align: center;
+    border: none;
+    font-size: 18px;
+}
+
+.action-button:hover {
+    background-color: var(--purple);
+}
+
+.ban-table .ban-line {
+    margin-bottom: 12px;
+    margin-left: 20px;
+    display: flex;
+    margin-inline: 20px;
+}
+
+.ban-line .server-name {
+    width: 150px;
+}
+
+.ban-line .reason {
+    width: 360px;
+}
+
+.ban-line .date {
+    width: 120px;
+}
+
+.ban-line .proof {
+    width: 10px;
+}

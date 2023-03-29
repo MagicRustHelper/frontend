@@ -6,7 +6,7 @@ interface SettingsItemsProps {
     setSettingItems: (value: string[]) => void
 }
 
-export function SettingsItem(props: SettingsItemsProps) {
+export function SettingsModal(props: SettingsItemsProps) {
     const [inputText, setInputText] = useState<string>('')
 
 

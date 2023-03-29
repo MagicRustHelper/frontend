@@ -4,15 +4,17 @@ import { BanRow } from './PlayerRows/BanRow'
 import { useBans } from '../hooks/getBanRowsTable'
 import { useState, ChangeEvent } from 'react'
 import { IBan, IBanRow } from '../interfaces/rows'
-import { IProfileSettings } from '../interfaces/profile'
 import { getProfileSettings } from '../utils/localStorage'
+import { Modal } from './Modals/Modal'
+import { PlayerModal } from './Modals/PlayerModal'
 
 
 export function BanTable() {
-    const filrtres = [filterByBanDays, filterByBanReason, filterByBanActive]
+    const filrtres = [filterByBanDays, filterByBanReason]
+    const [modalActive, setModalActive] = useState<boolean>(false);
     const [active, setActive] = useState<boolean>(true)
     const [checked, setChecked] = useState<boolean>(false)
-    const [reasons, setReasons] = useState<boolean>(false)
+    const [reasons, setReasons] = useState<boolean>(true)
     const [daysBanShow, setDaysBanShow] = useState<number>(60)
     const allBanRows: IBanRow[] = useBans()
     const settings = getProfileSettings()
@@ -26,11 +28,12 @@ export function BanTable() {
                 return false
             }
         }
-        return true
+        // Ban active working like a switch
+        return (element.bans.filter(filterByBanActive).length > 0)
     }
 
     function filterByBanDays(element: IBan, index: number, array: IBan[]): boolean {
-        if (element.days_left <= daysBanShow) {
+        if (element.daysLeft <= daysBanShow) {
             return true;
         }
         element.isShow = false;
@@ -38,6 +41,7 @@ export function BanTable() {
     }
 
     function filterByBanReason(element: IBan): boolean {
+        if (!reasons) { return true }
         for (let reason of settings.include_reasons) {
             const banLowerCase = element.reason.toLowerCase()
             if (element.active == active && banLowerCase.includes(reason) && !(settings.exclude_reasons.includes(banLowerCase))) {
@@ -48,6 +52,10 @@ export function BanTable() {
         return false;
     }
 
+    function filterByChecked(element: IBan): boolean {
+        return true;
+    }
+
     function filterByBanActive(element: IBan): boolean {
         if (element.active == active) {
             element.isShow = true;
@@ -56,8 +64,6 @@ export function BanTable() {
         element.isShow = false;
         return false;
     }
-
-    console.log(allBanRows)
 
     return (
         <main>
@@ -70,8 +76,11 @@ export function BanTable() {
                     <div className="search-item search-refresh"><img src={refresh_line} alt="" /></div>
                 </div>
                 <div className='player-rows'>
-                    {allBanRows.filter(filterByParams).map(banRow => <BanRow playerRow={banRow} key={banRow.steamid} />)}
+                    {allBanRows.filter(filterByParams).map(banRow => <BanRow playerRow={banRow} key={banRow.steamid} setModalActive={setModalActive} />)}
                 </div>
+                <Modal active={modalActive} setActive={setModalActive} >
+                    <PlayerModal></PlayerModal>
+                </Modal>
             </div>
 
         </main >

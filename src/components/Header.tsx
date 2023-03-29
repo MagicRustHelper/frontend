@@ -10,7 +10,7 @@ export function Header() {
                 <nav>
                     <div className='nav-left'>
                         <div className="nav-item"><a href="/bans">Поиск банов</a></div>
-                        <div className="nav-item"><a href="">Поиск по стате</a></div>
+                        <div className="nav-item"><a href="/stats">Поиск по стате</a></div>
                         <div className="nav-item"><a href="">Репорты</a></div>
                         <div className="nav-item"><a href="">Статистика</a></div>
                     </div>

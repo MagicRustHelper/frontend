@@ -5,15 +5,22 @@ import useCopyToClipboard from "../../hooks/copyToClickBoard";
 
 interface BanRowProps {
     playerRow: IBanRow;
+    setModalActive: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function BanRow(props: BanRowProps) {
-    const is_new_account = props.playerRow.is_new_account ? 'Да' : 'Нет';
-    const is_checked = props.playerRow.is_checked ? 'Да' : 'Нет';
+    const is_new_account = props.playerRow.isNewAccount ? '👽' : '';
+    const is_checked = props.playerRow.isChecked ? '🕶' : '';
     const [value, copy] = useCopyToClipboard()
+    function activePlayerModal(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+        // @ts-ignore idk why ts dont know about atrributes of target
+        if (event.target.className == "player-row")
+            props.setModalActive(true)
+    }
+
     return (
-        <div className='player-row'>
-            <div className='player-item player-server'>{props.playerRow.server_number}</div>
+        <div className='player-row' onClick={activePlayerModal}>
+            <div className='player-item player-server' >{props.playerRow.serverNumber}</div>
             <img src={props.playerRow.avatar} alt='' className='player-item player-img' />
             <a href={baseRCCPlayerURL + props.playerRow.steamid} target="_blank" className='player-item player-nickname'>{props.playerRow.nickname}</a>
             <div className='player-item player-id' onClick={() => copy(props.playerRow.steamid)}>{props.playerRow.steamid}</div>
@@ -34,8 +41,8 @@ function getBansString(bans: IBan[]): string {
     let banString = ''
     for (var ban of bans) {
         if (ban?.isShow == false) continue;
-        const serverName: string = getFixedServerName(ban.server_name)
-        banString += serverName + `(${ban.days_left}) `
+        const serverName: string = getFixedServerName(ban.serverName)
+        banString += serverName + `(${ban.daysLeft}) `
     }
     return banString;
 }

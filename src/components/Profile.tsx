@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Modal } from "./Modals/Modal"
-import { SettingsItem } from "./SettingsItem"
+import { SettingsModal } from "./Modals/SettingsModal"
 import { useSettings } from "../hooks/useSettings"
 
 export function Profile() {
@@ -22,7 +22,7 @@ export function Profile() {
             </div>
         </div>}
         <Modal active={modalActive} setActive={setModalActive}>
-            {settings && < SettingsItem key={changingSettingName} setSettingItems={setSettingItems} settingItems={settingItems} viewName={viewName}></SettingsItem>}
+            {settings && < SettingsModal key={changingSettingName} setSettingItems={setSettingItems} settingItems={settingItems} viewName={viewName}></SettingsModal>}
 
         </Modal >
     </>

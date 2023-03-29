@@ -25,8 +25,8 @@ export interface RCCPlayer {
     steamid: string
     last_nick?: string
     rcc_checks?: number
-    last_ip?: Array<string>
-    last_check?: Array<RCCCheck>
+    last_ip?: string[]
+    last_check: RCCCheck[]
     bans: RCCBan[]
-    another_accs?: Array<number>
+    another_accs?: number[]
 }

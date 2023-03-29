@@ -33,3 +33,7 @@ export function getProfileSettings(): IProfileSettings {
     }
     throw new Error('Не удалось загрузить настройки профиля!')
 }
+
+export function getPlayerIsNew(): number {
+    return getProfileSettings().player_is_new
+}
