@@ -7,15 +7,20 @@ import { IBan, IBanRow } from '../interfaces/rows'
 import { getProfileSettings } from '../utils/localStorage'
 import { Modal } from './Modals/Modal'
 import { PlayerModal } from './Modals/PlayerModal'
+import { getSearchButtonClass } from '../utils/utils'
 
 
 export function BanTable() {
     const filrtres = [filterByBanDays, filterByBanReason]
+
     const [modalActive, setModalActive] = useState<boolean>(false);
+    const [modalPlayerRow, setModalPlayerRow] = useState<IBanRow | null>(null)
+
     const [active, setActive] = useState<boolean>(true)
     const [checked, setChecked] = useState<boolean>(false)
     const [reasons, setReasons] = useState<boolean>(true)
     const [daysBanShow, setDaysBanShow] = useState<number>(60)
+
     const allBanRows: IBanRow[] = useBans()
     const settings = getProfileSettings()
     const changeDaysHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -76,18 +81,13 @@ export function BanTable() {
                     <div className="search-item search-refresh"><img src={refresh_line} alt="" /></div>
                 </div>
                 <div className='player-rows'>
-                    {allBanRows.filter(filterByParams).map(banRow => <BanRow playerRow={banRow} key={banRow.steamid} setModalActive={setModalActive} />)}
+                    {allBanRows.filter(filterByParams).map(banRow => <BanRow playerRow={banRow} key={banRow.steamid} setModalActive={setModalActive} setModalPlayerRow={setModalPlayerRow} />)}
                 </div>
                 <Modal active={modalActive} setActive={setModalActive} >
-                    <PlayerModal></PlayerModal>
+                    {modalPlayerRow !== null && <PlayerModal playerRow={modalPlayerRow}></PlayerModal>}
                 </Modal>
             </div>
 
         </main >
     );
-}
-
-function getSearchButtonClass(state: boolean): string {
-    const btnStyleClass = state ? 'search-button-pressed' : ''
-    return ['search-item search-button', btnStyleClass].join(' ');
 }

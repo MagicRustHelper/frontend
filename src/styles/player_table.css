@@ -34,7 +34,7 @@ main {}
     background-color: var(--purple);
 }
 
-.search input[type='number'] {
+.search input {
     width: 200px;
     padding: 10px;
     border-radius: 15px;
@@ -109,6 +109,14 @@ main {}
 
 .player-checked {
     width: 30px;
+}
+
+.player-stat-big {
+    width: 100px;
+}
+
+.player-stat {
+    width: 50px;
 }
 
 /* .player-server-ban {

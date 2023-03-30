@@ -8,13 +8,14 @@ export interface PlayerStats {
     kp_arrow: number
     kp_shot: number
     kp_melee: number
+    avatar: string
 }
 
 export interface Player {
     id: string
     ip: string
     nickname: string
-    server: string
+    server: number
     firstjoin: number
     vk?: number
     stats?: PlayerStats

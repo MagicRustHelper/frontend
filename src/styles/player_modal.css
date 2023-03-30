@@ -20,6 +20,7 @@
 }
 
 .player-info .steamid {
+    cursor: copy;
     font-size: 120%;
 }
 
@@ -85,18 +86,22 @@
     margin-inline: 20px;
 }
 
+.ban-table .not-active {
+    opacity: 30%;
+}
+
 .ban-line .server-name {
     width: 150px;
 }
 
 .ban-line .reason {
-    width: 360px;
+    width: 340px;
 }
 
 .ban-line .date {
-    width: 120px;
+    width: 160px;
 }
 
 .ban-line .proof {
-    width: 10px;
+    width: 20px;
 }

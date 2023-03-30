@@ -2,30 +2,48 @@ import rcc_logo from '../../assets/rcc_logo.svg'
 import steam_logo from '../../assets/steam_logo.png'
 
 import '../../styles/player_modal.css'
+import { usePlayerStats } from '../../hooks/getPlayerStats'
+import { useRCCPlayer } from '../../hooks/getRCCPlayer'
+import { useSteamAvatarUrl } from '../../hooks/getAvatarUrl'
+import { BanModalRow } from '../PlayerRows/BanModalRow'
+import { IBanRow } from '../../interfaces/rows'
+import { baseRCCPlayerURL, baseSteamProfileURL } from '../../constants'
+import useCopyToClipboard from '../../hooks/copyToClickBoard'
 
 
-export function PlayerModal() {
+
+interface PlayerModalProps {
+    playerRow: IBanRow
+}
+
+export function PlayerModal(props: PlayerModalProps) {
+    const [value, copy] = useCopyToClipboard()
+    const playerStats = usePlayerStats(props.playerRow.serverNumber, props.playerRow.steamid)
+    const rccPlayer = useRCCPlayer(props.playerRow.steamid)
+    const avatarUrl = useSteamAvatarUrl(props.playerRow.steamid)
+
     return (
         <div className='player-modal-container'>
             <div className='info' >
-                <div><img src="https://avatars.akamai.steamstatic.com/76c4f11192698de1bdd36c7a67df53bdb944404e_full.jpg" alt="" className="player-img" /></div>
+                <div><img src={avatarUrl?.avatarFullUrl} alt="" className="player-img" /></div>
                 <div className='player-info'>
-                    <div className='name'>Name Name Name Name Name</div>
-                    <div className='steamid'>76561198985395304</div>
+                    <div className='name'>{props.playerRow.nickname}</div>
+                    <div className='steamid' onClick={() => copy(props.playerRow.steamid)}>{props.playerRow.steamid}</div>
                     <div className='stats'>
                         <div className='stat'>
-                            <span>K: 10(6)</span> <br /> <span>D: 2</span>
+                            <span>K: {playerStats?.kp_total}({playerStats?.kp_head})</span> <br /> <span>D: {playerStats?.d_player}</span>
                         </div>
                         <div className='stat'>
-                            <span>KD: 5</span> <br /> <span>HS: 60%</span>
+                            <span>KD: {playerStats?.kd}</span> <br /> <span>HS: {playerStats && getHSPercentage(playerStats.kp_total, playerStats.kp_head)}%</span>
                         </div>
+
                     </div>
                 </div>
                 <div className='line'></div>
                 <hr />
                 <div className='actions'>
-                    <img src={steam_logo} alt="" height='57' />
-                    <img className='logo' src={rcc_logo} alt="" height='43' />
+                    <a href={baseSteamProfileURL + props.playerRow.steamid} target='_blank' ><img src={steam_logo} alt="" height='57' /></a>
+                    <a href={baseRCCPlayerURL + props.playerRow.steamid} target='_blank'><img className='logo' src={rcc_logo} alt="" height='43' /></a>
                     <button className='action-button' >Выдать доступ</button>
                 </div>
             </div>
@@ -40,23 +58,16 @@ export function PlayerModal() {
                     <span className='proof'>Пруф</span>
                 </div>
                 <hr />
-                <div className='ban-line'>
-                    <span className='server-name'>grand</span>
-                    <span className='reason'>Покинул сервер во время проверки</span>
-                    <span className='date'>01.03.2022</span>
-                    <span className='date'>навсегда</span>
-                    <span className='proof'>icon</span>
-                </div>
-
-                <div className='ban-line'>
-                    <span className='server-name'>bro</span>
-                    <span className='reason'>macros</span>
-                    <span className='date'>29.03.2023</span>
-                    <span className='date'>навсегда</span>
-                    <span className='proof'>icon</span>
-                </div>
+                {rccPlayer?.bans.map(ban => <BanModalRow rccBan={ban} />)}
             </div>
         </div >
     )
 
+}
+
+function getHSPercentage(kills: number, headshots: number) {
+    if (kills == 0) {
+        return 0
+    }
+    return (headshots / kills * 100).toFixed(0)
 }

@@ -5,12 +5,12 @@ import { IBan, IBanRow } from "../interfaces/rows"
 import { Player } from "../interfaces/magic"
 import { baseSteamAvatar } from "../constants"
 import { getBearerToken, getPlayerIsNew } from "../utils/localStorage"
-import { useOnlinePlayers } from "./getOnlinePlayers"
+import { useOnlinePlayersDict } from "./getOnlinePlayers"
 
 
 export function useBans() {
     const token = getBearerToken()
-    const onlinePlayers = useOnlinePlayers(token)
+    const onlinePlayers = useOnlinePlayersDict(token)
     const [RCCPlayers, setRCCPlayers] = useState<RCCPlayer[]>(() => { return [] })
     const [banRows, setBanRows] = useState<IBanRow[]>(() => { return [] })
 
@@ -26,7 +26,7 @@ export function useBans() {
     async function fetchRCCPlayers(steamids: string[]) {
         const players = await RCCApi.getRCCPlayers(steamids, token)
         const newRCCPlayers: RCCPlayer[] = []
-        for (var player of players) {
+        for (let player of players) {
             if (player.status == "success") {
                 newRCCPlayers.push(player);
             }
@@ -65,7 +65,7 @@ async function getNewBanRows(RCCPlayers: RCCPlayer[], onlinePlayers: { [key: str
                 'isNewAccount': isPlayerNew(player, getPlayerIsNew()),
                 'isChecked': isPlayerChecked(RCCPlayer),
                 'bans': getIBanList(RCCPlayer),
-                'serverNumber': parseInt(player.server)
+                'serverNumber': player.server
 
             }
         )
@@ -99,7 +99,7 @@ function getIBanList(rccPlayer: RCCPlayer): IBan[] {
 async function tryGetAvatar(steamid: string, token: string) {
     let avatarUrl: string;
     try {
-        avatarUrl = (await steamApi.getAvatarUrl(steamid, token)).avatarUrl
+        avatarUrl = (await steamApi.getAvatarUrl(steamid, token)).avatarFullUrl
     }
     catch (error) {
         avatarUrl = baseSteamAvatar;

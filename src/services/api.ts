@@ -57,8 +57,13 @@ class magicAPI {
         return response.data
     }
 
-    async getPlayerStats(serverNumber: number, steamid: number, token: string) {
+    async getPlayerStats(serverNumber: number, steamid: string, token: string) {
         const response = await axios.get<PlayerStats>(`${this.magicApiUrl}/server/${serverNumber}/stats/${steamid}`, authHeaders(token))
+        return response.data
+    }
+
+    async fillPlayersStats(players: Player[], token: string) {
+        const response = await axios.post<Player[]>(`${this.magicApiUrl}/players/fill-stats`, players, authHeaders(token))
         return response.data
     }
 }

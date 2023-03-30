@@ -22,3 +22,4 @@ export const RUST_SERVERS_NAME: string[] = [
 
 export const baseSteamAvatar: string = 'https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg'
 export const baseRCCPlayerURL: string = 'https://rustcheatcheck.ru/panel/player/'
+export const baseSteamProfileURL: string = 'https://steamcommunity.com/profiles/'
