@@ -11,7 +11,6 @@ export function ProfileSettings() {
     const { playerNewInput, setPlayerNewInput, settings, changingSettingName, settingItems, viewName,
         setSettingItems, activeSettingModal, setIsSettingsChanged } = useSettings(setSettingsModalActive)
 
-
     return (<>
         {settings && <div className="container main">
             <h1 className='page-name'>Настройки</h1>

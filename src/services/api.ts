@@ -5,7 +5,7 @@ import { AuthData } from '../interfaces/auth'
 import { IAvatar } from '../interfaces/steam';
 import { ICreateProfileData, IProfileData, IProfileSettings } from '../interfaces/profile';
 
-const apiUrl: string = 'http://127.0.0.1:443/v1'
+const apiUrl: string = process.env.REACT_APP_API_URL
 
 function authHeaders(token: string) {
     return {

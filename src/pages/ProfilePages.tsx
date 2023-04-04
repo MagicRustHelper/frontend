@@ -1,5 +1,5 @@
 import { Header } from "../components/Header";
-import { ProfileSettings } from "../components/Profile";
+import { ProfileSettings } from "../components/ProfileSettings";
 
 import '../styles/profile.css'
 

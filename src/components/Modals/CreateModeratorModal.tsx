@@ -20,7 +20,6 @@ export function CreateModeratorModal() {
     function handleSumbitNewModerator(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
         updateNewModerator()
-        console.log(event)
     }
 
     function updateNewModerator() {
