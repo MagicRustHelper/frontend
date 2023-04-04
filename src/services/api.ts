@@ -3,7 +3,7 @@ import { Player, PlayerStats } from '../interfaces/magic';
 import { RCCPlayer } from '../interfaces/rcc';
 import { AuthData } from '../interfaces/auth'
 import { IAvatar } from '../interfaces/steam';
-import { IProfileData, IProfileSettings } from '../interfaces/profile';
+import { ICreateProfileData, IProfileData, IProfileSettings } from '../interfaces/profile';
 
 const apiUrl: string = 'http://127.0.0.1:443/v1'
 
@@ -110,7 +110,7 @@ class profileAPI {
     profileApiUrl: string
 
     constructor() {
-        this.profileApiUrl = apiUrl + '/profile'
+        this.profileApiUrl = apiUrl + '/moderator'
     }
 
     async getData(token: string) {
@@ -126,6 +126,12 @@ class profileAPI {
     async putSettings(settings: IProfileSettings, token: string) {
         const response = await axios.put(`${this.profileApiUrl}/settings`, settings, authHeaders(token));
         return response.data;
+    }
+
+    async createModerator(moderator: ICreateProfileData, token: string) {
+        const response = await axios.post(`${this.profileApiUrl}/new`, moderator, authHeaders(token))
+        if (response.status != 204) throw new Error('Failed when create new moderator')
+        return response.status
     }
 }
 

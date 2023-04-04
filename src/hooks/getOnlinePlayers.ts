@@ -29,5 +29,5 @@ export function useOnlinePlayersList(token: string) {
         fetchOnlinePlayers()
     }, [])
 
-    return onlinePlayers
+    return { onlinePlayers, setOnlinePlayers }
 }

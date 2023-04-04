@@ -6,21 +6,34 @@ import { Player } from "../interfaces/magic"
 import { baseSteamAvatar } from "../constants"
 import { getBearerToken, getPlayerIsNew } from "../utils/localStorage"
 import { useOnlinePlayersDict } from "./getOnlinePlayers"
+import { toast } from "react-toastify"
 
 
 export function useBans() {
     const token = getBearerToken()
     const onlinePlayers = useOnlinePlayersDict(token)
-    const [RCCPlayers, setRCCPlayers] = useState<RCCPlayer[]>(() => { return [] })
     const [banRows, setBanRows] = useState<IBanRow[]>(() => { return [] })
 
 
 
     async function PortionGetRCCPlayer() {
         const size: number = Object.keys(onlinePlayers).length
+        if (size == 0) { return }
+        const notifyId = toast.loading('Информация из чекера загружается..')
         for (let i = 0; i < size; i += 20) {
             await fetchRCCPlayers(Object.keys(onlinePlayers).slice(i, i + 20))
+            toast.update(notifyId, {
+                progress: i / size,
+            })
+
         }
+        toast.update(notifyId, {
+            render: 'Вся информация загружена!',
+            type: 'success',
+            isLoading: false,
+            autoClose: 2000,
+            progress: 1,
+        })
     }
 
     async function fetchRCCPlayers(steamids: string[]) {
@@ -31,21 +44,15 @@ export function useBans() {
                 newRCCPlayers.push(player);
             }
         }
-        setRCCPlayers((prevRCCPlayers: RCCPlayer[]) => prevRCCPlayers.concat(newRCCPlayers))
-    }
-
-    async function updateBanRows() {
-        const newBanRows: IBanRow[] = await getNewBanRows(RCCPlayers, onlinePlayers, token)
-        setBanRows(newBanRows)
+        const newBanRows = await getNewBanRows(newRCCPlayers, onlinePlayers, token)
+        setBanRows((prevRows) => prevRows.concat(newBanRows))
     }
 
     useEffect(() => {
         PortionGetRCCPlayer()
     }, [onlinePlayers])
 
-    useEffect(() => {
-        updateBanRows()
-    }, [RCCPlayers])
+
     return banRows
 }
 

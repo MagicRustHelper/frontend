@@ -24,7 +24,7 @@ export interface IStatRow {
     isNewAccount: boolean
     isChecked: boolean
     kills?: number
-    kd?: number
+    kd: number
     headshots?: number
     kill_shot?: number
     kill_arrow?: number

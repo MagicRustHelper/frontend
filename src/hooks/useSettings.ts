@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { profileApi } from "../services/api"
 import { getBearerToken, getProfileSettings, setProfileSettings } from "../utils/localStorage"
 import { IProfileSettings } from "../interfaces/profile"
+import { toast } from 'react-toastify'
 
 export function useSettings(setModalActive: React.Dispatch<React.SetStateAction<boolean>>) {
     const token = getBearerToken()
@@ -16,7 +17,13 @@ export function useSettings(setModalActive: React.Dispatch<React.SetStateAction<
 
     async function updateSettings() {
         setProfileSettings(settings)
-        await profileApi.putSettings(settings, token);
+        await toast.promise(
+            profileApi.putSettings(settings, token), {
+            pending: 'Настройки сохраняются',
+            success: 'Настройки обновлены!👌',
+            error: 'Не удалось обновить настройки'
+        }
+        );
     }
 
     function activeSettingModal(name: string, viewName: string) {

@@ -1,8 +1,18 @@
 export interface IProfileData {
     id: number
+    steamid: string
     name: string
     avatar_url: string
     vk_id: number
+}
+
+export interface ICreateProfileData {
+    steamid: string
+    name: string
+    avatar_url: string
+    vk_id: string | number
+    is_superuser: boolean
+    is_bot: boolean
 }
 
 

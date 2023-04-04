@@ -1,5 +1,5 @@
 import { Header } from "../components/Header";
-import { StatsTable } from "../components/StatsTable";
+import { StatsTable } from "../components/Tables/StatsTable";
 
 import '../styles/player_table.css'
 

@@ -1,4 +1,4 @@
-import { BanTable } from "../components/BanTable";
+import { BanTable } from "../components/Tables/BanTable";
 import { Header } from "../components/Header";
 
 export function BanPage() {

@@ -6,14 +6,14 @@ import { usePlayerStats } from '../../hooks/getPlayerStats'
 import { useRCCPlayer } from '../../hooks/getRCCPlayer'
 import { useSteamAvatarUrl } from '../../hooks/getAvatarUrl'
 import { BanModalRow } from '../PlayerRows/BanModalRow'
-import { IBanRow } from '../../interfaces/rows'
+import { IBanRow, IStatRow } from '../../interfaces/rows'
 import { baseRCCPlayerURL, baseSteamProfileURL } from '../../constants'
 import useCopyToClipboard from '../../hooks/copyToClickBoard'
 
 
 
 interface PlayerModalProps {
-    playerRow: IBanRow
+    playerRow: IBanRow | IStatRow
 }
 
 export function PlayerModal(props: PlayerModalProps) {
