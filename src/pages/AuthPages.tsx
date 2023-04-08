@@ -7,7 +7,7 @@ import { setAvatarUrl, setBearerToken, setProfileSettings } from '../utils/local
 
 export function AuthPage() {
     return (
-        <a href='https://oauth.vk.com/oauth/authorize?client_id=51415660&redirect_uri=http://127.0.0.1:3000/auth/vk&scope=offline' className='auth-img'><img src={vk_black_logo} alt="" height='100' width='100' /></a>
+        <a href={`https://oauth.vk.com/oauth/authorize?client_id=51415660&redirect_uri=${process.env.REACT_APP_REDIRECT_URL}&scope=offline`} className='auth-img'><img src={vk_black_logo} alt="" height='100' width='100' /></a>
     )
 }
 
