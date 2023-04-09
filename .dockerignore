@@ -2,5 +2,5 @@
 .env.example
 .gitignore
 README.md
-build/
-node_modules/
+build
+node_modules
