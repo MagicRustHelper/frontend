@@ -11,8 +11,8 @@ export function Header() {
                     <div className='nav-left'>
                         <div className="nav-item"><a href="/bans">Поиск банов</a></div>
                         <div className="nav-item"><a href="/stats">Поиск по стате</a></div>
-                        <div className="nav-item"><a href="">Репорты</a></div>
-                        <div className="nav-item"><a href="">Статистика</a></div>
+                        {/* <div className="nav-item"><a href="">Репорты</a></div> */}
+                        {/* <div className="nav-item"><a href="">Статистика</a></div> */}
                     </div>
                     <div className='nav-right'>
                         <a href="/profile"> <img src={avatarUrl} alt='' className='profile-avatar' />  </a>

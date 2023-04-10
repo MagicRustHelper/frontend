@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
+import { toast } from 'react-toastify';
 
 export const PrivateRoute = (props: { children: React.ReactNode }): JSX.Element => {
     const { children } = props
@@ -8,14 +9,14 @@ export const PrivateRoute = (props: { children: React.ReactNode }): JSX.Element 
     );
     const location = useLocation()
 
+    if (isLoggedIn) {
+        return <>{children}</>
+    }
 
-    return isLoggedIn ? (
-        <>{children}</>
-    ) : (
-        <Navigate
-            replace={true}
-            to="/auth"
-            state={{ from: `${location.pathname}${location.search}` }}
-        />
-    )
+    toast.info('Необходимо авторизоваться!')
+    return <Navigate
+        replace={true}
+        to="/auth"
+        state={{ from: `${location.pathname}${location.search}` }}
+    />
 }
