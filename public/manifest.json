@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "MR Helper",
+  "name": "Magic Rust Helper",
   "icons": [
     {
       "src": "favicon.ico",

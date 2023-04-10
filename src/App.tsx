@@ -24,6 +24,7 @@ function App() {
         <Route path='/stats' element={<PrivateRoute><StatsSearchPage /> </PrivateRoute>} > </Route>
         <Route path="/auth" element={<AuthPage></AuthPage>} />
         <Route path="/auth/vk" element={<AuthVKPage></AuthVKPage>} />
+        <Route path='/' element={<PrivateRoute><BanPage /> </PrivateRoute>} > </Route>
       </Routes>
     </>
   )
