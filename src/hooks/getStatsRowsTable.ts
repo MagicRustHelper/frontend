@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { magicApi } from "../services/api"
+import { checkApi, magicApi } from "../services/api"
 import { Player } from "../interfaces/magic"
 import { IStatRow } from "../interfaces/rows"
 import { getBearerToken, getPlayerIsNew } from "../utils/localStorage"
@@ -41,10 +41,12 @@ export function useStatsRows() {
 
     async function fetchPlayerStats(players: Player[], isNewPlayers: boolean) {
         const playersWithStats = await magicApi.fillPlayersStats(players, token);
+        const playerSteamids = playersWithStats.map(player => (player.id))
+        const checkedPlayers = await checkApi.getCheckedPlayers(playerSteamids, token)
         const newStatRows: IStatRow[] = []
         for (let player of playersWithStats) {
             if (player.stats?.kd == undefined) continue;
-            const newStatRow = getNewStatRow(player, isNewPlayers)
+            const newStatRow = getNewStatRow(player, isNewPlayers, isPlayerCheckedRecently(player, checkedPlayers))
             newStatRows.push(newStatRow)
         }
         if (isNewPlayers) { updateNewPlayersRows(newStatRows) }
@@ -97,14 +99,14 @@ export function useStatsRows() {
 }
 
 
-function getNewStatRow(player: Player, isPlayerNew: boolean): IStatRow {
+function getNewStatRow(player: Player, isPlayerNew: boolean, isPlayerChecked: boolean): IStatRow {
     return {
         'serverNumber': player.server,
         'avatar': player.stats?.avatar,
         'nickname': player.nickname,
         'steamid': player.id,
         'isNewAccount': isPlayerNew,
-        'isChecked': false,
+        'isChecked': isPlayerChecked,
         'kills': player.stats?.kp_total,
         'kd': player.stats?.kd || 0,
         'headshots': player.stats?.kp_head,
@@ -117,5 +119,12 @@ function getNewStatRow(player: Player, isPlayerNew: boolean): IStatRow {
 function isPlayerNew(firstJoin: number, daysWhileNew: number) {
     const secondsWhileNew = daysWhileNew * 86400
     if (Date.now() / 1000 - firstJoin <= secondsWhileNew) return true;
+    return false;
+}
+
+function isPlayerCheckedRecently(player: Player, checkedPlayers: { [key: string]: number }) {
+    const secondsWhileNew = getPlayerIsNew() * 86400
+    if (Date.now() / 1000 - checkedPlayers[player.id] <= secondsWhileNew) return true
+    console.log('not checked', player.id, Date.now() / 1000, checkedPlayers[player.id], secondsWhileNew)
     return false;
 }

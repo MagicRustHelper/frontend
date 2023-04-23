@@ -22,7 +22,7 @@ class CheckAPI {
         this.checkApiUrl = apiUrl + '/checks'
     }
 
-    async getCheckPlayers(steamids: string[], token: string) {
+    async getCheckedPlayers(steamids: string[], token: string) {
         const response = await axios.post<{ [key: string]: number }>(`${this.checkApiUrl}/get_checked`, steamids, authHeaders(token))
         return response.data
     }

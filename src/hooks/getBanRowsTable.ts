@@ -62,7 +62,7 @@ export function useBans() {
 async function getNewBanRows(RCCPlayers: RCCPlayer[], onlinePlayers: { [key: string]: Player }, token: string): Promise<IBanRow[]> {
     const newBanRows: IBanRow[] = []
     const newPlayersSteamid = RCCPlayers.map((player) => (player.steamid))
-    const newPlayersChecked = await checkApi.getCheckPlayers(newPlayersSteamid, token)
+    const newPlayersChecked = await checkApi.getCheckedPlayers(newPlayersSteamid, token)
     for (var RCCPlayer of RCCPlayers) {
         const player: Player = onlinePlayers[RCCPlayer.steamid]
         if (RCCPlayer.bans.length == 0) continue;
