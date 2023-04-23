@@ -43,7 +43,11 @@ class RCCAPI {
     async getRCCPlayers(steamids: Array<string>, token: string) {
         const response = await axios.post<RCCPlayer[]>(`${this.rccApiUrl}/players`, steamids, authHeaders(token));
         return response.data
+    }
 
+    async giveCheckerAccess(steamid: string, token: string) {
+        const response = await axios.post(`${this.rccApiUrl}/access?steamid=${steamid}`, {}, authHeaders(token))
+        return response.status
     }
 }
 

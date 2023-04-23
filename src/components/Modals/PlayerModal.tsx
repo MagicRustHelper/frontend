@@ -2,6 +2,7 @@ import rcc_logo from '../../assets/rcc_logo.svg'
 import steam_logo from '../../assets/steam_logo.png'
 
 import '../../styles/player_modal.css'
+import { RCCApi } from 'services/api'
 import { usePlayerStats } from '../../hooks/getPlayerStats'
 import { useRCCPlayer } from '../../hooks/getRCCPlayer'
 import { useSteamAvatarUrl } from '../../hooks/getAvatarUrl'
@@ -9,6 +10,9 @@ import { BanModalRow } from '../PlayerRows/BanModalRow'
 import { IBanRow, IStatRow } from '../../interfaces/rows'
 import { baseRCCPlayerURL, baseSteamProfileURL } from '../../constants'
 import useCopyToClipboard from '../../hooks/copyToClickBoard'
+import { getBearerToken } from 'utils/localStorage'
+
+import { toast } from 'react-toastify'
 
 
 
@@ -16,11 +20,22 @@ interface PlayerModalProps {
     playerRow: IBanRow | IStatRow
 }
 
+
 export function PlayerModal(props: PlayerModalProps) {
     const [value, copy] = useCopyToClipboard()
     const playerStats = usePlayerStats(props.playerRow.serverNumber, props.playerRow.steamid)
     const rccPlayer = useRCCPlayer(props.playerRow.steamid)
     const avatarUrl = useSteamAvatarUrl(props.playerRow.steamid)
+    const giveCheckerAccess = async () => {
+        // @ts-ignore
+        const status = await RCCApi.giveCheckerAccess(playerStats?.steamid, getBearerToken())
+        if (status == 204) {
+            toast.success(`Доступ ${playerStats?.name} выдан`)
+        }
+        else {
+            toast.error(`Не удалось выдать доступ`)
+        }
+    }
 
     return (
         <div className='player-modal-container'>
@@ -44,7 +59,7 @@ export function PlayerModal(props: PlayerModalProps) {
                 <div className='actions'>
                     <a href={baseSteamProfileURL + props.playerRow.steamid} target='_blank' ><img src={steam_logo} alt="" height='57' /></a>
                     <a href={baseRCCPlayerURL + props.playerRow.steamid} target='_blank'><img className='logo' src={rcc_logo} alt="" height='43' /></a>
-                    <button className='action-button' >Выдать доступ</button>
+                    <button className='action-button' onClick={giveCheckerAccess}>Выдать доступ</button>
                 </div>
             </div>
             <div className='ban-table'>
