@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { RCCApi, steamApi } from "../services/api"
+import { RCCApi, steamApi, checkApi } from "../services/api"
 import { RCCPlayer } from "../interfaces/rcc"
 import { IBan, IBanRow } from "../interfaces/rows"
 import { Player } from "../interfaces/magic"
@@ -61,6 +61,8 @@ export function useBans() {
 
 async function getNewBanRows(RCCPlayers: RCCPlayer[], onlinePlayers: { [key: string]: Player }, token: string): Promise<IBanRow[]> {
     const newBanRows: IBanRow[] = []
+    const newPlayersSteamid = RCCPlayers.map((player) => (player.steamid))
+    const newPlayersChecked = await checkApi.getCheckPlayers(newPlayersSteamid, token)
     for (var RCCPlayer of RCCPlayers) {
         const player: Player = onlinePlayers[RCCPlayer.steamid]
         if (RCCPlayer.bans.length == 0) continue;
@@ -70,7 +72,7 @@ async function getNewBanRows(RCCPlayers: RCCPlayer[], onlinePlayers: { [key: str
                 'nickname': player.nickname,
                 'steamid': RCCPlayer.steamid,
                 'isNewAccount': isPlayerNew(player, getPlayerIsNew()),
-                'isChecked': isPlayerChecked(RCCPlayer),
+                'isChecked': isPlayerChecked(RCCPlayer, newPlayersChecked),
                 'bans': getIBanList(RCCPlayer),
                 'serverNumber': player.server
 
@@ -114,13 +116,17 @@ async function tryGetAvatar(steamid: string, token: string) {
     return avatarUrl;
 }
 
-function isPlayerChecked(rccPlayer: RCCPlayer) {
+function isPlayerChecked(rccPlayer: RCCPlayer, checkedPlayers: { [key: string]: number }) {
     if (rccPlayer.bans.length == 0) return false;
     const lastBan = rccPlayer.bans.reduce((prev, cur) => prev.banDate > cur.banDate ? prev : cur)
+    if (checkedPlayers[rccPlayer.steamid] >= lastBan.banDate) {
+        return true
+    }
     const allChecksAfterBan = rccPlayer.last_check.filter((value) => value.time > lastBan.banDate)
     for (let check of allChecksAfterBan) {
         console.log(check.serverName)
-        if (check.serverName?.toLowerCase() == 'magicrust') return true
+        if (check.serverName?.toLowerCase() == 'magicrust' || check.serverName?.toLowerCase() == 'magic rust') return true
     }
     return false
 }
+

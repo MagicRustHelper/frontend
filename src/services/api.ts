@@ -15,6 +15,18 @@ function authHeaders(token: string) {
     };
 }
 
+class CheckAPI {
+    checkApiUrl: string
+
+    constructor() {
+        this.checkApiUrl = apiUrl + '/checks'
+    }
+
+    async getCheckPlayers(steamids: string[], token: string) {
+        const response = await axios.post<{ [key: string]: number }>(`${this.checkApiUrl}/get_checked`, steamids, authHeaders(token))
+        return response.data
+    }
+}
 
 class RCCAPI {
     rccApiUrl: string
@@ -143,3 +155,4 @@ export const magicApi = new magicAPI()
 export const authApi = new authAPI()
 export const steamApi = new steamAPI()
 export const profileApi = new profileAPI()
+export const checkApi = new CheckAPI() 
