@@ -2,6 +2,10 @@ import useCopyToClipboard from "hooks/copyToClickBoard";
 import { baseRCCPlayerURL } from "../../constants";
 import { IStatRow } from "../../interfaces/rows";
 
+import arrow from "assets/arrow.png"
+import bullet from "assets/bullet.png"
+import headshot from "assets/headshot.png"
+
 interface StatsRowProps {
     playerRow: IStatRow
     setModalActive: React.Dispatch<React.SetStateAction<boolean>>;
@@ -30,9 +34,9 @@ export function StatsRow(props: StatsRowProps) {
             <div className="player-item player-new">{isNewAccount}</div>
             <div className="player-item player-checked">{isChecked}</div>
             <div className="player-item player-stat-big">{props.playerRow.kills}/{props.playerRow.deaths}({props.playerRow.kd})</div>
-            <div className="player-item player-stat">{props.playerRow.headshots}</div>
-            <div className="player-item player-stat">{props.playerRow.kill_shot}</div>
-            <div className="player-item player-stat">{props.playerRow.kill_arrow}</div>
+            <div className="player-item player-stat"><img className="kill-type" src={headshot} alt='HS' /> {props.playerRow.headshots}</div>
+            <div className="player-item player-stat"><img className="kill-type" src={bullet} alt='GUN' /> {props.playerRow.kill_shot}</div>
+            <div className="player-item player-stat"><img className="kill-type" src={arrow} alt='ARROW' /> {props.playerRow.kill_arrow}</div>
         </div>
     )
 }

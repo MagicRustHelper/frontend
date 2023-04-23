@@ -116,5 +116,11 @@ main {}
 }
 
 .player-stat {
-    width: 50px;
+    width: 80px;
+}
+
+.kill-type {
+    width: 37px;
+    padding: 5px;
+    color: white;
 }
